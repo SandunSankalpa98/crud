@@ -28,7 +28,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:225',
+            'description' => 'required|string|max:225',
+            'status' => 'nullable',
+        ]);
+        Category::create($request->all());
     }
 
     /**
