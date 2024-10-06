@@ -38,7 +38,12 @@
                                     <td>
                                         <a href="{{ route('category.edit', ['category' => $category->id]) }}" class="btn btn-success">Edit</a>
                                         <a href="{{ route('category.show', ['category' => $category->id]) }}" class="btn btn-info">Show</a>
-                                        <a href="{{ route('category.destroy', ['category' => $category->id]) }}" class="btn btn-danger">Delete</a>
+                                        {{-- <a href="{{ route('category.destroy', ['category' => $category->id]) }}" class="btn btn-danger">Delete</a> --}}
+                                        <form action="{{ route('category.destroy', $category->id) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
