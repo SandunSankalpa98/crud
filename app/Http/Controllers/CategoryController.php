@@ -33,7 +33,13 @@ class CategoryController extends Controller
             'description' => 'required|string|max:225',
             'status' => 'nullable',
         ]);
-        Category::create($request->all());
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'status'=> $request->status == true ? 1:0,
+        ]);
+
+        return redirect('/category')->back()->with('status','Category Created Successfully!');
     }
 
     /**
