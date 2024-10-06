@@ -4,6 +4,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if (session('status'))
+                <div class="alert alert-success" id="status-alert">
+                    {{ session('status') }}
+                </div>
+                @endif
+
                 <div class="card">
                     <div class="card-header">
                         <h4>
@@ -23,13 +29,19 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($categories as $category)
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $category->id}}</td>
+                                    <td>{{ $category->name}}</td>
+                                    <td>{{ $category->description}}</td>
+                                    <td>{{ $category->status == 1? 'Visible':'Hidden' }}</td>
+                                    <td>
+                                        <a href="{{ route('category.edit', ['category' => $category->id]) }}" class="btn btn-success">Edit</a>
+                                        <a href="{{ route('category.show', ['category' => $category->id]) }}" class="btn btn-info">Show</a>
+                                        <a href="{{ route('category.destroy', ['category' => $category->id]) }}" class="btn btn-danger">Delete</a>
+                                    </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -37,4 +49,16 @@
             </div>
         </div>
     </div>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                let statusAlert = document.getElementById('status-alert');
+                if (statusAlert) {
+                    statusAlert.style.display = 'none';
+                }
+            }, 3000);
+        });
+    </script>
 @endsection

@@ -12,7 +12,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category.index');
+        $categories = Category::paginate(10);
+        return view('category.index',[
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -36,10 +39,10 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name,
             'description' => $request->description,
-            'status'=> $request->status == true ? 1:0,
+            'status' => $request->status == true ? 1 : 0,
         ]);
 
-        return redirect('/category')->back()->with('status','Category Created Successfully!');
+        return redirect('/category')->with('status','Category Created Successfully!');
     }
 
     /**
@@ -47,15 +50,15 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('category.show');
+        return view('category.show', compact('category'));
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Category $category)
     {
-        return view('category.edit');
+        return view('category.edit', compact('category'));
     }
 
     /**
@@ -63,7 +66,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:225',
+            'description' => 'required|string|max:225',
+            'status' => 'nullable',
+        ]);
+        $category->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status == true ? 1 : 0,
+        ]);
+
+        return redirect('/category')->with('status','Category Updated Successfully!');
     }
 
     /**
